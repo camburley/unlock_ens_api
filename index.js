@@ -90,7 +90,12 @@ app.post('/v1/add', async function ( req, res ) {
     const name = req.body.name 
     const twitter = req.body.twitter 
 
-    if(ens === undefined || email === undefined  ){
+    let data = {
+        ens, number, email, name, twitter
+    }
+    console.log("data", data)
+
+    if(email === undefined  ){
         return res.status(400).json({ msg_code: 1, message: 'subscriptions must include email address and ens appended to the body. Add both and retry.'})
         } else if( validateEmail(email) === false ) {
         return res.status(400).json({ msg_code: 1, message: 'A valid email address is required. Please append a valid email and retry.'})
@@ -101,13 +106,13 @@ app.post('/v1/add', async function ( req, res ) {
     {
         let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (email.match(regexEmail)) {
-        return true; 
+         true; 
         } else {
-        return false; 
+         false; 
         }
     }
   
-    await subs.save(req, res, name, email, twitter, ens, number);
+    return await subs.save(req, res, name, email, twitter, ens, number);
 });
 
 

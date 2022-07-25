@@ -40,20 +40,24 @@ module.exports = {
           const doesNumberMatch = await usersRef.where('number', '==' , number).get();
           const doesTwitterMatch = await usersRef.where('twitter', '==' , twitter).get();
           const filteredByThisEmail = doesEmailMatch.docs.map( doc => doc.data() );
+          console.log("filteredByThisEmail", filteredByThisEmail)
+          console.log("filteredByThisEmail.length", filteredByThisEmail.length)
           const filteredByThisEns = doesEnsMatch.docs.map( doc => doc.data() );
           const filteredByThisNumber = doesNumberMatch.docs.map( doc => doc.data() );
           const filteredByThisTwitter = doesTwitterMatch.docs.map( doc => doc.data() );
+          console.log("filteredByThisTwitter", filteredByThisTwitter)
+          console.log("filteredByThisTwitter.length", filteredByThisTwitter.length)
 
             if(filteredByThisEmail.length >= 1 ){
+                console.log("filteredByThisEmail is true if > 0", filteredByThisEmail.length)
                 await res.status(302).json({ msg_code: 1, message: 'Good news! we already have this email address saved'}).end();
-                return res.status(200).json({ msg_code: 0, message: 'Success!', data: data }).end();
+                await res.status(200).json({ msg_code: 0, message: 'Success!', data: data }).end();
             } else if ( filteredByThisEns.length >= 1) {
+                console.log("filteredByThisEns is true if > 0", filteredByThisEns.length)
                 await res.status(302).json({ msg_code: 1, message: 'Looks like this ens is already saved. Please save an email address with another ens'}).end()
                 return res.status(200).json({ msg_code: 0, message: 'Success!', data: data }).end();
-            } else if( filteredByThisNumber.length >= 1){
-                await res.status(302).json({ msg_code: 1, message: 'Looks like this Number is already saved. Please retry'}).end()
-                return res.status(200).json({ msg_code: 0, message: 'Success!', data: data }).end();
             } else if( filteredByThisTwitter.length >= 1) {
+                console.log("filteredByThisTwitter is true if > 0", filteredByThisTwitter.length)
                 await res.status(302).json({ msg_code: 1, message: 'Looks like this Twitter is already saved. Please retry'}).end()
                 return res.status(200).json({ msg_code: 0, message: 'Success!', data: data }).end();
             }
