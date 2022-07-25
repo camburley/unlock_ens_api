@@ -63,6 +63,10 @@ app.get('/v1/ens', async function ( req, res) {
     const ethers = new ethersPkg.providers.JsonRpcProvider(alchemyURL);
     const address = req.query.convert;
     async function mixpanelTrack(address, converted ){
+        const firstPartyDataMixpanel = process.env.MIXPANEL_PROJECT_TOKEN
+        var mixpanel = Mixpanel.init( firstPartyDataMixpanel, {
+        protocol: 'https'
+    });
         return mixpanel.track('address requested', {
            ens: address,
            converted: converted,
